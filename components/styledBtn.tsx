@@ -1,7 +1,7 @@
 import { StyleSheet, TouchableHighlight, Text } from 'react-native';
 import { colors } from '../constants/Colors.ts';
 
-export default function RoutingBtn(props) {
+export default function StyledBtn(props) {
         const bgColor = props.isSecondary ? colors.secondary : colors.primary;
         const style = StyleSheet.create({
             btn: {
