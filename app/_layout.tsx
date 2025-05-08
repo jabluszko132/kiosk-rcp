@@ -1,29 +1,44 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+import { Slot } from "expo-router";
+import { View } from "react-native";
+import { useState, useEffect } from 'react';
+import { SQLiteProvider, SQLiteDatabase } from 'expo-sqlite';
 
-import { useColorScheme } from '@/hooks/useColorScheme';
+//moving initDB to a different file causes a compilation error
+async function initDB(db: SQLiteDatabase) {
+    try{
+        await db.execAsync(
+            "CREATE TABLE IF NOT EXISTS exitEnterTimes(id INTEGER NOT NULL, isEntering INTEGER NOT NULL, time TEXT NOT NULL);"
+        );
+    }catch(error){
+        console.error(error);
+    }
+}
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
 
-  if (!loaded) {
-    // Async font loading only occurs in development.
-    return null;
-  }
+    const [data, setData] = useState({
+          id: null,
+          isEntering: null,
+          time: null,
+    });
 
-  return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
-  );
+    return (
+    <>
+      <View
+        style={{width: '100%', height: '50'}}
+      >
+
+      </View>
+      <SQLiteProvider databaseName="rcpData.db" onInit={initDB}>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+                      <Slot/>
+          </View>
+      </SQLiteProvider>
+  </>);
 }

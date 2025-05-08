@@ -1,10 +1,11 @@
 import { Text,View } from 'react-native';
 import { CameraView, useCameraPermissions } from 'expo-camera'
 import { useRouter } from 'expo-router';
+import StyledBtn from '../components/styledBtn.tsx';
 
 function barcodeScanned(scanningResult){
     const router = useRouter();
-    router.navigate()
+    router.navigate('/' + scanningResult.data); //foolproof this later
 }
 
 export default function ScanQR(){
@@ -12,18 +13,19 @@ export default function ScanQR(){
 
     if(!permission) return <View/>;
 
+    let elements;
     if(!permission.granted){
-        const elements = <Text>Zezwól na użycie aparatu</Text>;
+        elements = <Text>Zezwól na użycie aparatu</Text>;
     }else{
-        const elements = (
-            <Text>Zeskanuj kod QR</Text>
-            <CameraView
-                barcodeScannerSettings={{
-                    barcodeTypes: ["qr"],
-                  }}
-                onBarcodeScanned={barcodeScanned}
-            />
-            );
+        elements = <>
+                <Text>Zeskanuj kod QR</Text>
+                <CameraView
+                    barcodeScannerSettings={{
+                        barcodeTypes: ["qr"],
+                      }}
+                    onBarcodeScanned={barcodeScanned}
+                />
+            </>;
     }
 
     return (
@@ -36,6 +38,13 @@ export default function ScanQR(){
               }}
             >
                 {elements}
+                <StyledBtn
+                    title={"debug skip"}
+                    onPress={() => {
+                            const router = useRouter();
+                            router.navigate('/1234');
+                        }}
+                />
             </View>
         );
 }
