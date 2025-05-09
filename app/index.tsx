@@ -15,10 +15,10 @@ export default function ScanQR(){
 
     let elements;
     if(!permission.granted){
-        elements = <Text>Zezwól na użycie aparatu</Text>;
+        elements = <Text style={{fontSize: 30}}>Zezwól na użycie aparatu</Text>;
     }else{
         elements = <>
-                <Text>Zeskanuj kod QR</Text>
+                <Text style={{fontSize: 50}}>Zeskanuj kod QR</Text>
                 <CameraView
                     barcodeScannerSettings={{
                         barcodeTypes: ["qr"],

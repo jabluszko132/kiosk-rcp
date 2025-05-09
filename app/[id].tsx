@@ -32,7 +32,7 @@ export default function Index() {
           <View
               style={{
                   width: '100%',
-                  height: '30%',
+                  height: '45%',
                   justifyContent: 'space-around',
                   alignItems: 'center',
               }}
