@@ -1,6 +1,5 @@
 import { Slot } from "expo-router";
 import { View } from "react-native";
-import { useState, useEffect } from 'react';
 import { SQLiteProvider, SQLiteDatabase } from 'expo-sqlite';
 
 //moving initDB to a different file causes a compilation error
@@ -15,13 +14,6 @@ async function initDB(db: SQLiteDatabase) {
 }
 
 export default function RootLayout() {
-
-    const [data, setData] = useState({
-          id: null,
-          isEntering: null,
-          time: null,
-    });
-
     return (
     <>
       <View

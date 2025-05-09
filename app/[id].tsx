@@ -16,7 +16,7 @@ export default function Index() {
   function continueRegistering(isEntering: boolean){
       const data = {
          $id: id,
-         $isEntering: isEntering ? 1 : 0,
+         $isEntering: isEntering,
          $time: Date.now()
       }
       addRowStatement.executeAsync(data)
