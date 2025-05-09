@@ -13,7 +13,7 @@ export default function Index() {
   const { id } = useLocalSearchParams();
 
 
-  function continueRegistering(isEntering){
+  function continueRegistering(isEntering: boolean){
       const data = {
          $id: id,
          $isEntering: isEntering ? 1 : 0,
@@ -46,7 +46,7 @@ export default function Index() {
             <StyledBtn
                 title="WYJŚCIE"
                 onPress={() => {
-                    continueRegistering();
+                    continueRegistering(false);
                     }}
             />
             <StyledBtn
