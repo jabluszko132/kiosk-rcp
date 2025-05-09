@@ -38,13 +38,6 @@ export default function ScanQR(){
               }}
             >
                 {elements}
-                <StyledBtn
-                    title={"debug skip"}
-                    onPress={() => {
-                            const router = useRouter();
-                            router.navigate('/1234');
-                        }}
-                />
             </View>
         );
 }
