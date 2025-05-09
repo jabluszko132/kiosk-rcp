@@ -6,7 +6,7 @@ import { SQLiteProvider, SQLiteDatabase } from 'expo-sqlite';
 async function initDB(db: SQLiteDatabase) {
     try{
         await db.execAsync(
-            "CREATE TABLE IF NOT EXISTS exitEnterTimes(id INTEGER NOT NULL, isEntering INTEGER NOT NULL, time TEXT NOT NULL);"
+            "CREATE TABLE IF NOT EXISTS exitEnterTimes(id TEXT NOT NULL, isEntering INTEGER NOT NULL, time TEXT NOT NULL);"
         );
     }catch(error){
         console.error(error);
