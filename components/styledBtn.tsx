@@ -3,7 +3,11 @@ import { colors } from '../constants/Colors.ts';
 
 export default function StyledBtn(props) {
         const bgColor = props.isSecondary ? colors.secondary : colors.primary;
-        const style = StyleSheet.create({
+        const styles = StyleSheet.create({
+            container: {
+                justifyContent: 'center',
+                alignItems: 'center',
+            },
             btn: {
                 backgroundColor: bgColor,
                 color: "#fff",
@@ -18,8 +22,8 @@ export default function StyledBtn(props) {
         });
 
         return (
-                <TouchableHighlight onPress={props.onPress}>
-                    <Text style={style.btn}>
+                <TouchableHighlight onPress={props.onPress} style={styles.container}>
+                    <Text style={styles.btn}>
                         {props.title}
                     </Text>
                 </TouchableHighlight>
