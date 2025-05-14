@@ -15,12 +15,11 @@ export default function Index() {
 
   const { id } = useLocalSearchParams();
 
-
-  function continueRegistering(isEntering: boolean){
+  function storeInLocalDb(isEntering: boolean, time: String){
       const data = {
-         $id: id,
-         $isEntering: isEntering,
-         $time: Date.now()
+               $id: id,
+               $isEntering: isEntering,
+               $time: time
       }
       addRowStatement.executeAsync(data)
         .then(() => {
@@ -29,6 +28,37 @@ export default function Index() {
         .catch((error) => {
             console.error(error);
         });
+  }
+
+  function continueRegistering(isEntering: boolean){
+      if(isOnline){
+        const time = Date.now();
+        fetch(`${process.env.EXPO_PUBLIC_API_URL}/upload-data`,{
+            method: "POST",
+            headers: {
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify({
+                 id: id,
+                 isEntering: isEntering,
+                 time: time,
+             }),
+        })
+        .then(async (res) => {
+            if(res.ok){
+                router.navigate('/')
+            }else{
+                console.error(await res.text());
+                storeInLocalDb(isEntering,time);
+            }
+        })
+        .catch((error) => {
+            console.error(error);
+            storeInLocalDb(isEntering,time);
+        });
+      }else{
+        storeInLocalDb(isEntering, Date.now());
+      }
   }
 
   return (
