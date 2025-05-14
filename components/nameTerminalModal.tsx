@@ -1,8 +1,8 @@
 import { Modal, TextInput, StyleSheet, Text } from 'react-native';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import StyledBtn from './styledBtn.tsx';
-import { setItemAsync,getItemAsync } from 'expo-secure-store';
-
+import { setItemAsync } from 'expo-secure-store';
+import { TerminalContext } from '../contexts/terminalContext.ts';
 
 interface NameTerminalModalProps {
         modalVisible: boolean,
@@ -11,10 +11,21 @@ interface NameTerminalModalProps {
 
 export default function NameTerminalModal({modalVisible, setModalVisible}: NameTerminalModalProps){
     function onSubmit(){
-        setItemAsync('terminalId',terminalId);
-        setModalVisible(false);
+        fetch(process.env.EXPO_PUBLIC_API_URL + '/register-terminal/' + stateTerminalId,
+            {
+                method: "POST",
+            })
+            .then(() => {
+                setItemAsync('terminalId',stateTerminalId);
+                setTerminalId(stateTerminalId);
+                setModalVisible(false);
+            })
+            .catch((error) => {
+                console.error(`Error registering: ${error}`);
+            })
     }
-    const [ terminalId, setTerminalId ] = useState('');
+    const { terminalId, setTerminalId } = useContext(TerminalContext);
+    const [ stateTerminalId, setStateTerminalId ] = useState('');
     const styles = StyleSheet.create({
         container: {
                   width: '100%',
@@ -57,8 +68,8 @@ export default function NameTerminalModal({modalVisible, setModalVisible}: NameT
         <Text style={styles.title}>Zarejestruj terminal w systemie</Text>
         <Text style={styles.label}>Nazwa terminala:</Text>
         <TextInput
-            value={terminalId}
-            onChangeText={setTerminalId}
+            value={stateTerminalId}
+            onChangeText={setStateTerminalId}
             style={styles.input}
         />
         <StyledBtn

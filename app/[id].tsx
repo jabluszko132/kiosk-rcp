@@ -2,8 +2,11 @@ import { View } from "react-native";
 import StyledBtn from "../components/styledBtn.tsx";
 import { useSQLiteContext } from "expo-sqlite";
 import { useRouter, useLocalSearchParams } from "expo-router";
+import { OnlineContext } from '../contexts/onlineContext.ts';
+import { useContext } from 'react';
 
 export default function Index() {
+  const isOnline = useContext(OnlineContext);
   const db = useSQLiteContext();
   const addRowStatement = db.prepareSync(
       "INSERT INTO exitEnterTimes (id, isEntering, time) VALUES ($id, $isEntering, $time)"
