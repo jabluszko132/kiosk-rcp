@@ -45,19 +45,6 @@ export default function Index(){
                 onBlur={()=>barcodeScanner.current.focus()}
                 autoFocus
             />
-            <StyledBtn
-                title={"debug reset name"}
-                onPress={() => {
-                        setItemAsync('terminalId','');
-                    }}
-            />
-            <StyledBtn
-                title={"debug skip scan"}
-                onPress={() => {
-                        const router = useRouter();
-                        router.navigate('/1234xd');
-                    }}
-            />
         </>;
 
     return (
