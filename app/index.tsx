@@ -1,5 +1,4 @@
 import { Text, View } from 'react-native';
-import { CameraView, useCameraPermissions } from 'expo-camera'
 import { useRouter } from 'expo-router';
 import StyledBtn from '../components/styledBtn.tsx';
 import { TerminalIdContext } from '../contexts/terminalIdContext.ts';
@@ -26,32 +25,23 @@ export default function Index(){
         checkTerminalId();
     });
 
-
-    const [permission, requestPermission] = useCameraPermissions();
-
-    if(!permission) return <View/>;
-
     let elements;
-    if(!permission.granted){
-        elements = <Text style={{fontSize: 30}}>Zezwól na użycie aparatu</Text>;
-    }else{
-        elements = <>
-                <Text style={{fontSize: 50}}>Zeskanuj kod QR</Text>
-                <CameraView
-                    style={{width: "50%", height: "300"}}
-                    barcodeScannerSettings={{
-                        barcodeTypes: ["qr"],
-                      }}
-                    onBarcodeScanned={barcodeScanned}
-                />
-                <StyledBtn
-                    title={"debug reset name"}
-                    onPress={() => {
-                            setItemAsync('terminalId','');
-                        }}
-                />
-            </>;
-    }
+    elements = <>
+            <Text style={{fontSize: 50}}>Zeskanuj kod QR</Text>
+            <StyledBtn
+                title={"debug reset name"}
+                onPress={() => {
+                        setItemAsync('terminalId','');
+                    }}
+            />
+            <StyledBtn
+                title={"debug skip scan"}
+                onPress={() => {
+                        const router = useRouter();
+                        router.navigate('/1234xd');
+                    }}
+            />
+        </>;
 
     return (
             <View
