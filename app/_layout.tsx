@@ -20,7 +20,7 @@ async function initDB(db: SQLiteDatabase) {
 
 export default function RootLayout() {
     const [terminalId, setTerminalId] = useState('');
-    const [isOnline, setIsOnline] = useState(true);
+    const [isOnline, setIsOnline] = useState(undefined);
     let connectionCheckerInterval = null;
 
 
@@ -28,15 +28,15 @@ export default function RootLayout() {
         fetch(`${process.env.EXPO_PUBLIC_API_URL}/online-check/${terminalId}`)
             .then((res) => {
                 if(res.ok){
-                    if(!isOnline) setIsOnline(true);
+                    if(isOnline !== true) setIsOnline(true);
                 }else {
-                    if(isOnline) {
+                    if(isOnline !== false) {
                         setIsOnline(false);
                     }
                 }
             })
             .catch((error) => {
-                if(isOnline) {
+                if(isOnline !== false) {
                     setIsOnline(false);
                 }
             });
@@ -65,7 +65,7 @@ export default function RootLayout() {
     },[terminalId]);
 
     return (
-    <OnlineContext.Provider value={isOnline}>
+    <OnlineContext value={isOnline}>
         <TerminalContext value={{terminalId, setTerminalId}}>
           <View
             style={{width: '100%', height: '50'}}
@@ -84,5 +84,5 @@ export default function RootLayout() {
               </View>
           </SQLiteProvider>
       </TerminalContext>
-  </OnlineContext.Provider>);
+  </OnlineContext>);
 }
