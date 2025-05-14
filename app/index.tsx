@@ -1,8 +1,8 @@
-import { Text, View } from 'react-native';
+import { Text, View, TextInput } from 'react-native';
 import { useRouter } from 'expo-router';
 import StyledBtn from '../components/styledBtn.tsx';
 import { TerminalIdContext } from '../contexts/terminalIdContext.ts';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { getItemAsync, setItemAsync } from 'expo-secure-store';
 import NameTerminalModal from '../components/nameTerminalModal.tsx';
 
@@ -25,9 +25,26 @@ export default function Index(){
         checkTerminalId();
     });
 
+    const barcodeScanner = useRef(null);
+
+    const [userId, setUserId] = useState('');
+
     let elements;
     elements = <>
             <Text style={{fontSize: 50}}>Zeskanuj kod QR</Text>
+            <TextInput
+                style={{
+                    opacity: 0,
+                    height: 0,
+                }}
+                showSoftInputOnFocus={false}
+                ref={barcodeScanner}
+                value={userId}
+                onChangeText={setUserId}
+                onSubmitEditing={() => {router.navigate(`/${userId}`)}}
+                onBlur={()=>barcodeScanner.current.focus()}
+                autoFocus
+            />
             <StyledBtn
                 title={"debug reset name"}
                 onPress={() => {
@@ -55,6 +72,7 @@ export default function Index(){
             <NameTerminalModal
                 modalVisible={modalVisible}
                 setModalVisible={setModalVisible}
+                afterSubmit={() => {barcodeScanner.current.focus()}}
             />
                 {elements}
             </View>

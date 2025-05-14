@@ -6,10 +6,11 @@ import { TerminalContext } from '../contexts/terminalContext.ts';
 
 interface NameTerminalModalProps {
         modalVisible: boolean,
-        setModalVisible: Function
+        setModalVisible: Function,
+        afterSubmit: Function
 }
 
-export default function NameTerminalModal({modalVisible, setModalVisible}: NameTerminalModalProps){
+export default function NameTerminalModal({modalVisible, setModalVisible, afterSubmit}: NameTerminalModalProps){
     function onSubmit(){
         fetch(process.env.EXPO_PUBLIC_API_URL + '/register-terminal/' + stateTerminalId,
             {
@@ -19,6 +20,7 @@ export default function NameTerminalModal({modalVisible, setModalVisible}: NameT
                 setItemAsync('terminalId',stateTerminalId);
                 setTerminalId(stateTerminalId);
                 setModalVisible(false);
+                afterSubmit();
             })
             .catch((error) => {
                 console.error(`Error registering: ${error}`);
