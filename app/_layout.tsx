@@ -25,8 +25,7 @@ export default function RootLayout() {
 
 
     function checkConnection(){
-        fetch(`${process.env.EXPO_PUBLIC_API_URL}/online-check/${terminalId}`,
-            )
+        fetch(`${process.env.EXPO_PUBLIC_API_URL}/online-check/${terminalId}`)
             .then((res) => {
                 if(res.ok){
                     if(!isOnline) setIsOnline(true);
