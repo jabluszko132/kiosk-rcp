@@ -3,7 +3,7 @@ import StyledBtn from "../components/styledBtn.tsx";
 import { useSQLiteContext } from "expo-sqlite";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { OnlineContext } from '../contexts/onlineContext.ts';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 
 export default function Index() {
   const isOnline = useContext(OnlineContext);
@@ -11,8 +11,42 @@ export default function Index() {
   const addRowStatement = db.prepareSync(
       "INSERT INTO exitEnterTimes (id, isEntering, time) VALUES ($id, $isEntering, $time)"
       );
-  const router = useRouter();
 
+  async function uploadLocalDataIfNeeded(){
+      const localData: Object[] = await db.getAllAsync('SELECT * FROM exitEnterTimes');
+      if(localData.length > 0){
+        fetch(`${process.env.EXPO_PUBLIC_API_URL}/upload-data-bulk`,{
+                    method: "POST",
+                    headers: {
+                        'Content-type': 'application/json',
+                    },
+                    body: JSON.stringify(
+                        localData.map(row => {
+                                row.isEntering = row.isEntering === 1 ? true : false;
+                                row.time = parseInt(row.time);
+                                return row;
+                            })
+                        ),
+        })
+        .then(async (res) => {
+            if(res.ok){
+                db.runAsync('DELETE FROM exitEnterTimes')
+                    .catch(error => console.error(error));
+            }else{
+                console.error(await res.text());
+            }
+        })
+        .catch(error => console.error(error));
+      }
+  }
+
+  useEffect(() => {
+    if(isOnline){
+        uploadLocalDataIfNeeded();
+    }
+  },[isOnline]);
+
+  const router = useRouter();
   const { id } = useLocalSearchParams();
 
   function storeInLocalDb(isEntering: boolean, time: String){
