@@ -1,19 +1,15 @@
 import { Text, View, TextInput, Keyboard, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
-import StyledBtn from '../components/styledBtn.tsx';
 import { useEffect, useState, useRef } from 'react';
 import { getItemAsync } from 'expo-secure-store';
 import NameTerminalModal from '../components/nameTerminalModal.tsx';
 
-
-function barcodeScanned(scanningResult){
-    const router = useRouter();
-    router.navigate('/' + scanningResult.data); //foolproof this later
-}
-
 export default function Index(){
     const router = useRouter();
     const [ modalVisible, setModalVisible ] = useState(false);
+    const [userId, setUserId] = useState('');
+    const barcodeScanner = useRef(null);
+
     useEffect(() => {
         async function checkTerminalId(){
             const terminalId = await getItemAsync('terminalId') ?? '';
@@ -23,14 +19,6 @@ export default function Index(){
         };
         checkTerminalId();
     });
-
-    useEffect(() => {
-        Keyboard.dismiss();
-    },[modalVisible]);
-
-    const barcodeScanner = useRef(null);
-
-    const [userId, setUserId] = useState('');
 
     const styles = StyleSheet.create({
         container: {
@@ -53,10 +41,6 @@ export default function Index(){
             <NameTerminalModal
                 modalVisible={modalVisible}
                 setModalVisible={setModalVisible}
-                afterSubmit={() => {
-                    barcodeScanner.current.focus();
-                    Keyboard.dismiss();
-                }}
             />
     );
 
@@ -70,6 +54,7 @@ export default function Index(){
                 showSoftInputOnFocus={false}
                 value={userId}
                 onChangeText={setUserId}
+                onFocus={()=>Keyboard.dismiss()}
                 onBlur={()=>barcodeScanner.current.focus()}
                 onSubmitEditing={() => {router.navigate(`/${userId}`)}}
             />

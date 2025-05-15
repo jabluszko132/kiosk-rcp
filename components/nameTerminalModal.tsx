@@ -7,10 +7,9 @@ import { TerminalContext } from '../contexts/terminalContext.ts';
 interface NameTerminalModalProps {
         modalVisible: boolean,
         setModalVisible: Function,
-        afterSubmit: Function
 }
 
-export default function NameTerminalModal({modalVisible, setModalVisible, afterSubmit}: NameTerminalModalProps){
+export default function NameTerminalModal({modalVisible, setModalVisible}: NameTerminalModalProps){
     function onSubmit(){
         fetch(process.env.EXPO_PUBLIC_API_URL + '/register-terminal/' + stateTerminalId,
             {
@@ -20,13 +19,12 @@ export default function NameTerminalModal({modalVisible, setModalVisible, afterS
                 setItemAsync('terminalId',stateTerminalId);
                 setTerminalId(stateTerminalId);
                 setModalVisible(false);
-                afterSubmit();
             })
             .catch((error) => {
                 console.error(`Error registering: ${error}`);
             })
     }
-    const { terminalId, setTerminalId } = useContext(TerminalContext);
+    const { setTerminalId } = useContext(TerminalContext);
     const [ stateTerminalId, setStateTerminalId ] = useState('');
     const styles = StyleSheet.create({
         container: {

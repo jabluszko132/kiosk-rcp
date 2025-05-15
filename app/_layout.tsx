@@ -21,8 +21,6 @@ async function initDB(db: SQLiteDatabase) {
 export default function RootLayout() {
     const [terminalId, setTerminalId] = useState('');
     const [isOnline, setIsOnline] = useState(undefined);
-    let connectionCheckerInterval = null;
-
 
     function checkConnection(){
         fetch(`${process.env.EXPO_PUBLIC_API_URL}/online-check/${terminalId}`)
@@ -45,7 +43,7 @@ export default function RootLayout() {
     useEffect(() => {
         async function readTerminalId(){
             const localTerminalId = await getItemAsync('terminalId');
-            if(localTerminalId != terminalId){
+            if(localTerminalId !== terminalId){
                 setTerminalId(localTerminalId);
             }
         }
@@ -53,6 +51,7 @@ export default function RootLayout() {
     });
 
     useEffect(() => {
+        let connectionCheckerInterval = null;
         if(terminalId === ''){
             clearInterval(connectionCheckerInterval);
         }else if(connectionCheckerInterval == null){

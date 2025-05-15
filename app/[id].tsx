@@ -15,7 +15,7 @@ export default function Index() {
   const { id } = useLocalSearchParams();
 
   async function uploadLocalDataIfNeeded(){
-      const localData: Object[] = await db.getAllAsync('SELECT * FROM exitEnterTimes');
+      const localData: object[] = await db.getAllAsync('SELECT * FROM exitEnterTimes');
       if(localData.length > 0){
         fetch(`${process.env.EXPO_PUBLIC_API_URL}/upload-data-bulk`,{
             method: "POST",
@@ -42,7 +42,7 @@ export default function Index() {
       }
   }
 
-  function storeInLocalDb(isEntering: boolean, time: String){
+  function storeInLocalDb(isEntering: boolean, time: string){
       const data = {
                $id: id,
                $isEntering: isEntering,
