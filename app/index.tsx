@@ -65,7 +65,10 @@ export default function Index(){
             <NameTerminalModal
                 modalVisible={modalVisible}
                 setModalVisible={setModalVisible}
-                afterSubmit={() => {barcodeScanner.current.focus()}}
+                afterSubmit={() => {
+                    barcodeScanner.current.focus();
+                    Keyboard.dismiss();
+                }}
             />
         </View>
     );
