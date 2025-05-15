@@ -21,21 +21,27 @@ async function initDB(db: SQLiteDatabase) {
 export default function RootLayout() {
     const [terminalId, setTerminalId] = useState('');
     const [isOnline, setIsOnline] = useState(undefined);
+    let currIsOnline; //because functions running on set interval read old state values
 
     function checkConnection(){
         fetch(`${process.env.EXPO_PUBLIC_API_URL}/online-check/${terminalId}`)
             .then((res) => {
                 if(res.ok){
-                    if(isOnline !== true) setIsOnline(true);
+                    if(currIsOnline !== true) {
+                        setIsOnline(true);
+                        currIsOnline = true;
+                    }
                 }else {
-                    if(isOnline !== false) {
+                    if(currIsOnline !== false) {
                         setIsOnline(false);
+                        currIsOnline = false;
                     }
                 }
             })
             .catch((error) => {
-                if(isOnline !== false) {
+                if(currIsOnline !== false) {
                     setIsOnline(false);
+                    currIsOnline = false;
                 }
             });
     }
