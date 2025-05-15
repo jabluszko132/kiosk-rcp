@@ -11,22 +11,24 @@ export default function Index() {
   const addRowStatement = db.prepareSync(
       "INSERT INTO exitEnterTimes (id, isEntering, time) VALUES ($id, $isEntering, $time)"
       );
+  const router = useRouter();
+  const { id } = useLocalSearchParams();
 
   async function uploadLocalDataIfNeeded(){
       const localData: Object[] = await db.getAllAsync('SELECT * FROM exitEnterTimes');
       if(localData.length > 0){
         fetch(`${process.env.EXPO_PUBLIC_API_URL}/upload-data-bulk`,{
-                    method: "POST",
-                    headers: {
-                        'Content-type': 'application/json',
-                    },
-                    body: JSON.stringify(
-                        localData.map(row => {
-                                row.isEntering = row.isEntering === 1 ? true : false;
-                                row.time = parseInt(row.time);
-                                return row;
-                            })
-                        ),
+            method: "POST",
+            headers: {
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify(
+                localData.map(row => {
+                        row.isEntering = row.isEntering === 1 ? true : false;
+                        row.time = parseInt(row.time);
+                        return row;
+                    })
+                ),
         })
         .then(async (res) => {
             if(res.ok){
@@ -39,15 +41,6 @@ export default function Index() {
         .catch(error => console.error(error));
       }
   }
-
-  useEffect(() => {
-    if(isOnline){
-        uploadLocalDataIfNeeded();
-    }
-  },[isOnline]);
-
-  const router = useRouter();
-  const { id } = useLocalSearchParams();
 
   function storeInLocalDb(isEntering: boolean, time: String){
       const data = {
@@ -95,6 +88,12 @@ export default function Index() {
       }
   }
 
+  useEffect(() => {
+    if(isOnline){
+        uploadLocalDataIfNeeded();
+    }
+  },[isOnline]);
+
   return (
           <View
               style={{
@@ -106,15 +105,11 @@ export default function Index() {
           >
             <StyledBtn
                 title="WEJŚCIE"
-                onPress={() => {
-                    continueRegistering(true);
-                    }}
+                onPress={() => continueRegistering(true)}
             />
             <StyledBtn
                 title="WYJŚCIE"
-                onPress={() => {
-                    continueRegistering(false);
-                    }}
+                onPress={() => continueRegistering(false)}
             />
             <StyledBtn
                 title="ANULUJ"

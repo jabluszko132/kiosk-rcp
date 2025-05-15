@@ -51,7 +51,7 @@ export default function Index(){
     });
 
     return (
-            <View style={styles.container}>
+        <View style={styles.container}>
             <Text style={styles.label}>Zeskanuj kod QR</Text>
             <TextInput
                 ref={barcodeScanner}
@@ -68,6 +68,6 @@ export default function Index(){
                 setModalVisible={setModalVisible}
                 afterSubmit={() => {barcodeScanner.current.focus()}}
             />
-            </View>
-        );
+        </View>
+    );
 }

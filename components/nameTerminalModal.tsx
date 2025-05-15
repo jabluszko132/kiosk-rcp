@@ -62,7 +62,8 @@ export default function NameTerminalModal({modalVisible, setModalVisible, afterS
         }
     });
 
-    return <Modal
+    return (
+    <Modal
         transparent={false}
         style={styles.container}
         visible={modalVisible}
@@ -78,5 +79,6 @@ export default function NameTerminalModal({modalVisible, setModalVisible, afterS
             title={"POTWIERDŹ"}
             onPress={onSubmit}
         />
-    </Modal>;
+    </Modal>
+    );
 }
