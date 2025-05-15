@@ -1,5 +1,5 @@
 import { Slot } from "expo-router";
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { SQLiteProvider, SQLiteDatabase } from 'expo-sqlite';
 import { useEffect, useState } from 'react';
 import { TerminalContext } from '../contexts/terminalContext.ts';
