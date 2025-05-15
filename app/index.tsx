@@ -1,14 +1,47 @@
 import { Text, View, TextInput, Keyboard, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useContext } from 'react';
 import { getItemAsync } from 'expo-secure-store';
 import NameTerminalModal from '../components/nameTerminalModal.tsx';
+import { useSQLiteContext } from 'expo-sqlite';
+import { OnlineContext } from '../contexts/onlineContext.ts';
 
 export default function Index(){
     const router = useRouter();
     const [ modalVisible, setModalVisible ] = useState(false);
     const [userId, setUserId] = useState('');
     const barcodeScanner = useRef(null);
+    const db = useSQLiteContext();
+    const isOnline = useContext(OnlineContext)
+
+    async function uploadLocalDataIfNeeded(){
+        const localData: object[] = await db.getAllAsync('SELECT * FROM exitEnterTimes');
+        if(localData.length > 0){
+          fetch(`${process.env.EXPO_PUBLIC_API_URL}/upload-data-bulk`,{
+              method: "POST",
+              headers: {
+                  'Content-type': 'application/json',
+              },
+              body: JSON.stringify(
+                  localData.map(row => {
+                          row.isEntering = row.isEntering === 1 ? true : false;
+                          row.time = parseInt(row.time);
+                          return row;
+                      })
+                  ),
+          })
+          .then(async (res) => {
+              if(res.ok){
+                  db.runAsync('DELETE FROM exitEnterTimes')
+                      .catch(error => console.error(error));
+              }else{
+                  console.error(await res.text());
+              }
+          })
+          .catch(error => console.error(error));
+        }
+    }
+
 
     useEffect(() => {
         async function checkTerminalId(){
@@ -19,6 +52,12 @@ export default function Index(){
         };
         checkTerminalId();
     });
+
+  useEffect(() => {
+    if(isOnline){
+        uploadLocalDataIfNeeded();
+    }
+  },[isOnline]);
 
     const styles = StyleSheet.create({
         container: {
