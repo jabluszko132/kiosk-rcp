@@ -67,9 +67,6 @@ export default function RootLayout() {
         header: {
             width: '100%',
             height: 50,
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            flexDirection: 'row',
         },
         terminalIdDisplay: {
             fontSize: 40,
@@ -89,7 +86,6 @@ export default function RootLayout() {
     <OnlineContext value={isOnline}>
         <TerminalContext value={{terminalId, setTerminalId}}>
           <View style={styles.header}>
-            <Text style={styles.terminalIdDisplay}>{terminalId}</Text>
             <ConnectionDisplayer/>
           </View>
           <SQLiteProvider databaseName="rcpData.db" onInit={initDB}>
