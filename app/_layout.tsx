@@ -1,5 +1,5 @@
 import { Slot } from "expo-router";
-import { View, Text } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { SQLiteProvider, SQLiteDatabase } from 'expo-sqlite';
 import { useEffect, useState } from 'react';
 import { TerminalContext } from '../contexts/terminalContext.ts';
@@ -64,24 +64,38 @@ export default function RootLayout() {
         }
     },[terminalId]);
 
+    const styles = StyleSheet.create({
+        header: {
+            width: '100%',
+            height: '10%',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexDirection: 'row',
+        },
+        terminalIdDisplay: {
+            fontSize: 40,
+            height: '100%',
+            textAlign: 'center',
+            textAlignVertical: 'center',
+            paddingLeft: 30,
+        },
+        routeContainer: {
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        }
+    });
+
     return (
     <OnlineContext value={isOnline}>
         <TerminalContext value={{terminalId, setTerminalId}}>
-          <View
-            style={{width: '100%', height: '10%', alignItems: 'center',  justifyContent: 'space-between', flexDirection: 'row'}}
-          >
-            <Text style={{fontSize: 40, height: '100%', textAlign: 'center', textAlignVertical: 'center', paddingLeft: 30}}>{terminalId}</Text>
+          <View style={styles.header}>
+            <Text style={styles.terminalIdDisplay}>{terminalId}</Text>
             <ConnectionDisplayer/>
           </View>
           <SQLiteProvider databaseName="rcpData.db" onInit={initDB}>
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                          <Slot/>
+              <View style={styles.routeContainer} >
+                <Slot/>
               </View>
           </SQLiteProvider>
       </TerminalContext>
