@@ -6,7 +6,6 @@ export default function ConnectionDisplayer(){
     const isOnline = useContext(OnlineContext);
     const styles = StyleSheet.create({
         container: {
-            alignSelf: 'flex-end',
             backgroundColor: isOnline ? "#0f0" : "#f00",
             color: "#fff",
             fontSize: 30,

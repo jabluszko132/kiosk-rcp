@@ -1,5 +1,5 @@
 import { Slot } from "expo-router";
-import { View } from "react-native";
+import { View, Text } from "react-native";
 import { SQLiteProvider, SQLiteDatabase } from 'expo-sqlite';
 import { useEffect, useState } from 'react';
 import { TerminalContext } from '../contexts/terminalContext.ts';
@@ -68,8 +68,9 @@ export default function RootLayout() {
     <OnlineContext value={isOnline}>
         <TerminalContext value={{terminalId, setTerminalId}}>
           <View
-            style={{width: '100%', height: '50'}}
+            style={{width: '100%', height: '10%', alignItems: 'center',  justifyContent: 'space-between', flexDirection: 'row'}}
           >
+            <Text style={{fontSize: 40, height: '100%', textAlign: 'center', textAlignVertical: 'center', paddingLeft: 30}}>{terminalId}</Text>
             <ConnectionDisplayer/>
           </View>
           <SQLiteProvider databaseName="rcpData.db" onInit={initDB}>
