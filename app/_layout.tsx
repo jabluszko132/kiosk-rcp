@@ -21,30 +21,6 @@ async function initDB(db: SQLiteDatabase) {
 export default function RootLayout() {
     const [terminalId, setTerminalId] = useState('');
     const [isOnline, setIsOnline] = useState(undefined);
-    let currIsOnline; //because functions running on set interval read old state values
-
-    function checkConnection(){
-        fetch(`${process.env.EXPO_PUBLIC_API_URL}/online-check/${terminalId}`)
-            .then((res) => {
-                if(res.ok){
-                    if(currIsOnline !== true) {
-                        setIsOnline(true);
-                        currIsOnline = true;
-                    }
-                }else {
-                    if(currIsOnline !== false) {
-                        setIsOnline(false);
-                        currIsOnline = false;
-                    }
-                }
-            })
-            .catch((error) => {
-                if(currIsOnline !== false) {
-                    setIsOnline(false);
-                    currIsOnline = false;
-                }
-            });
-    }
 
     useEffect(() => {
         async function readTerminalId(){
@@ -57,6 +33,23 @@ export default function RootLayout() {
     });
 
     useEffect(() => {
+        function checkConnection(){
+            fetch(`${process.env.EXPO_PUBLIC_API_URL}/online-check/${terminalId}`)
+                .then((res) => {
+                    if(res.ok){
+                        if(isOnline !== true) setIsOnline(true);
+                    }else {
+                        if(isOnline !== false) {
+                            setIsOnline(false);
+                        }
+                    }
+                })
+                .catch((error) => {
+                    if(isOnline !== false) {
+                        setIsOnline(false);
+                    }
+                });
+        };
         let connectionCheckerInterval = null;
         if(terminalId === ''){
             clearInterval(connectionCheckerInterval);
@@ -67,7 +60,7 @@ export default function RootLayout() {
         return () => {
             clearInterval(connectionCheckerInterval);
         }
-    },[terminalId]);
+    },[isOnline,terminalId]);
 
     const styles = StyleSheet.create({
         header: {
