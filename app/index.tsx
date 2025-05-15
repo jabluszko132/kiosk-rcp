@@ -1,9 +1,8 @@
 import { Text, View, TextInput, Keyboard, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 import StyledBtn from '../components/styledBtn.tsx';
-import { TerminalIdContext } from '../contexts/terminalIdContext.ts';
 import { useEffect, useState, useRef } from 'react';
-import { getItemAsync, setItemAsync } from 'expo-secure-store';
+import { getItemAsync } from 'expo-secure-store';
 import NameTerminalModal from '../components/nameTerminalModal.tsx';
 
 
