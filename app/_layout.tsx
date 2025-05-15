@@ -67,7 +67,7 @@ export default function RootLayout() {
     const styles = StyleSheet.create({
         header: {
             width: '100%',
-            height: '10%',
+            height: 50,
             alignItems: 'center',
             justifyContent: 'space-between',
             flexDirection: 'row',
