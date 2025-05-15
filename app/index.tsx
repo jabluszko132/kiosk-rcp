@@ -49,6 +49,17 @@ export default function Index(){
         }
     });
 
+    const nameTerminalModal = (
+            <NameTerminalModal
+                modalVisible={modalVisible}
+                setModalVisible={setModalVisible}
+                afterSubmit={() => {
+                    barcodeScanner.current.focus();
+                    Keyboard.dismiss();
+                }}
+            />
+    );
+
     return (
         <View style={styles.container}>
             <Text style={styles.label}>Zeskanuj kod QR</Text>
@@ -62,14 +73,7 @@ export default function Index(){
                 onBlur={()=>barcodeScanner.current.focus()}
                 onSubmitEditing={() => {router.navigate(`/${userId}`)}}
             />
-            <NameTerminalModal
-                modalVisible={modalVisible}
-                setModalVisible={setModalVisible}
-                afterSubmit={() => {
-                    barcodeScanner.current.focus();
-                    Keyboard.dismiss();
-                }}
-            />
+            {modalVisible && nameTerminalModal}
         </View>
     );
 }
