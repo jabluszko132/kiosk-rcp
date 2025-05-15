@@ -11,12 +11,12 @@ export default function StyledBtn(props) {
             btn: {
                 backgroundColor: bgColor,
                 color: "#fff",
-                padding: "10",
-                height: "100",
-                width: "200",
+                padding: "20",
+                height: "200",
+                width: "400",
                 textAlign: "center",
                 textAlignVertical: "center",
-                fontSize: 30,
+                fontSize: 60,
                 fontWeight: 'bold',
             }
         });

@@ -38,10 +38,11 @@ export default function Index(){
             width: '100%',
             height: '100%',
             alignItems: 'center',
-            justifyContent: 'space-around',
+            justifyContent: 'center',
         },
         label: {
-            fontSize: 50,
+            fontSize: 125,
+            paddingBottom: 30,
         },
         input: {
             opacity: 0,
