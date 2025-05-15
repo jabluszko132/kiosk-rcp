@@ -1,4 +1,4 @@
-import { Text, View, TextInput } from 'react-native';
+import { Text, View, TextInput, Keyboard } from 'react-native';
 import { useRouter } from 'expo-router';
 import StyledBtn from '../components/styledBtn.tsx';
 import { TerminalIdContext } from '../contexts/terminalIdContext.ts';
@@ -24,6 +24,10 @@ export default function Index(){
         };
         checkTerminalId();
     });
+
+    useEffect(() => {
+        Keyboard.dismiss();
+    },[modalVisible]);
 
     const barcodeScanner = useRef(null);
 
