@@ -1,4 +1,4 @@
-import { Text, View, TextInput, Keyboard } from 'react-native';
+import { Text, View, TextInput, Keyboard, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 import StyledBtn from '../components/styledBtn.tsx';
 import { TerminalIdContext } from '../contexts/terminalIdContext.ts';
@@ -33,39 +33,40 @@ export default function Index(){
 
     const [userId, setUserId] = useState('');
 
-    let elements;
-    elements = <>
-            <Text style={{fontSize: 50}}>Zeskanuj kod QR</Text>
-            <TextInput
-                style={{
-                    opacity: 0,
-                    height: 0,
-                }}
-                showSoftInputOnFocus={false}
-                ref={barcodeScanner}
-                value={userId}
-                onChangeText={setUserId}
-                onSubmitEditing={() => {router.navigate(`/${userId}`)}}
-                onBlur={()=>barcodeScanner.current.focus()}
-                autoFocus
-            />
-        </>;
+    const styles = StyleSheet.create({
+        container: {
+            width: '100%',
+            height: '100%',
+            alignItems: 'center',
+            justifyContent: 'space-around',
+        },
+        label: {
+            fontSize: 50,
+        },
+        input: {
+            opacity: 0,
+            height: 0,
+        }
+    });
 
     return (
-            <View
-              style={{
-                  width: '100%',
-                  height: '100%',
-                  justifyContent: 'space-around',
-                  alignItems: 'center',
-              }}
-            >
+            <View style={styles.container}>
+            <Text style={styles.label}>Zeskanuj kod QR</Text>
+            <TextInput
+                ref={barcodeScanner}
+                style={styles.input}
+                autoFocus
+                showSoftInputOnFocus={false}
+                value={userId}
+                onChangeText={setUserId}
+                onBlur={()=>barcodeScanner.current.focus()}
+                onSubmitEditing={() => {router.navigate(`/${userId}`)}}
+            />
             <NameTerminalModal
                 modalVisible={modalVisible}
                 setModalVisible={setModalVisible}
                 afterSubmit={() => {barcodeScanner.current.focus()}}
             />
-                {elements}
             </View>
         );
 }
