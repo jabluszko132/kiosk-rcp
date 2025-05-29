@@ -5,7 +5,8 @@
   "scripts": {
     "start": "expo start",
     "android": "expo run:android",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "ios": "expo run:ios"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.1.0",
@@ -22,6 +23,7 @@
     "expo-image": "~2.1.7",
     "expo-linking": "~7.1.4",
     "expo-router": "~5.0.6",
+    "expo-secure-store": "~14.2.3",
     "expo-splash-screen": "^0.30.8",
     "expo-sqlite": "~15.2.9",
     "expo-status-bar": "~2.2.3",
@@ -34,10 +36,11 @@
     "react-native-reanimated": "~3.17.4",
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.10.0",
-    "expo-secure-store": "~14.2.3"
+    "expo-build-properties": "~0.14.6"
   },
   "devDependencies": {
     "@babel/core": "^7.27.1",
+    "@react-native-community/cli": "^18.0.0",
     "@types/react": "~19.0.10",
     "eslint": "^9.26.0",
     "eslint-config-expo": "~9.2.0",

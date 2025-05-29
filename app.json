@@ -16,10 +16,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.kioskrcp",
-      "permissions": [
-        "android.permission.CAMERA"
-      ]
+      "package": "com.anonymous.kioskrcp"
     },
     "web": {
       "bundler": "metro",
@@ -38,7 +35,17 @@
         }
       ],
       "expo-sqlite",
-      "expo-secure-store"
+      "expo-secure-store",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 35,
+            "targetSdkVersion": 35,
+            "buildToolsVersion": "35.0.0"
+          }
+        } 
+      ]
     ],
     "experiments": {
       "typedRoutes": true
